@@ -1,7 +1,7 @@
-Role Name
+Ansible Redhat and CentOS Extra Repositories
 ========
 
-A brief description of the role goes here.
+Installs EPEL, Remi
 
 Requirements
 ------------

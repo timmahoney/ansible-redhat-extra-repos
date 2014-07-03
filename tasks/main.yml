@@ -1,2 +1,22 @@
 ---
-# tasks file for .
+- name: Create a directory to hold the RPMs
+  sudo: yes
+  file: "path=/tmp/repo_rpms state=directory"
+  tags:
+  - repos
+
+- name: Copy the RPMs over
+  sudo: yes
+  copy: "src={{ item }} dest=/tmp/repo_rpms"
+  with_fileglob: 
+  - "*.rpm"
+  tags:
+  - repos
+
+- name: Install the Repos
+  sudo: yes
+  yum: "name={{ item }} state=present"
+  with_fileglob: 
+  - "/tmp/repo_rpms/*.rpm"
+  tags:
+  - repos
