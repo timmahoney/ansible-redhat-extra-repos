@@ -1,0 +1,24 @@
+{% for repo in item.value %}
+[{{ repo.machine_name }}]
+name={{ repo.name }}
+{% if repo.baseurl %}
+{% if repo.mirrorlist is defined -%}#{%- endif %}baseurl={{ repo.baseurl }}
+{% endif %}
+{% if repo.mirrorlist is defined %}
+mirrorlist={{ repo.mirrorlist }}
+{% endif %}
+{% if repo.failovermethod is defined %}
+failovermethod={{ repo.failovermethod }}
+{% endif %}
+{% if repo.enabled %}
+enabled={{ repo.enabled }}
+{% endif %}
+{% if repo.gpgcheck %}
+gpgcheck={{ repo.gpgcheck }}
+{% endif %}
+{% if repo.gpgcheck %}
+gpgkey={{ repo.gpgkey }}
+{% endif %}
+
+
+{% endfor %}

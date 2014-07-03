@@ -1,22 +1,17 @@
 ---
-- name: Create a directory to hold the RPMs
+- name: Make sure yum.repos.d exists
   sudo: yes
+  tags: repos
   file: "path=/tmp/repo_rpms state=directory"
-  tags:
-  - repos
 
-- name: Copy the RPMs over
+- name: Install the GPG Keys
   sudo: yes
-  copy: "src={{ item }} dest=/tmp/repo_rpms"
-  with_fileglob: 
-  - "*.rpm"
-  tags:
-  - repos
+  tags: repos
+  get_url: url={{ item.value[0].gpgurl }} dest=/etc/pki/rpm-gpg/ mode=0644
+  with_dict: repositories
 
-- name: Install the Repos
+- name: Install the repositories
   sudo: yes
-  yum: "name={{ item }} state=present"
-  with_fileglob: 
-  - "/tmp/repo_rpms/*.rpm"
-  tags:
-  - repos
+  tags: repos
+  template: "src=repo.j2 dest=/etc/yum.repos.d/{{ item.key }}.repo"
+  with_dict: repositories
